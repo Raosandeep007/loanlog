@@ -1,56 +1,79 @@
 # LoanLog 📊
 
-> A comprehensive loan tracking application for managing loans given to others or taken from others, with flexible repayment schedules and smart analytics.
+> A comprehensive loan tracking mobile application built with Expo, SQLite, and Drizzle ORM. Track loans you've given or taken with flexible repayment schedules and smart analytics - all stored locally on your device.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![Expo](https://img.shields.io/badge/Expo-~51.0.0-000020.svg)](https://expo.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
 
 ## ✨ Features
 
-### Core Features
-- 📝 **Comprehensive Loan Management**: Track loans given or taken with detailed information
-- 💰 **Flexible Payment Schedules**: Support for daily, weekly, monthly, or custom EMI frequencies
-- 📈 **Interest Calculations**: Both simple and compound interest with multiple compounding frequencies
-- 💳 **Payment Tracking**: Record payments with automatic balance updates and history
-- 🔔 **Smart Reminders**: Configurable notifications via Push, Email, SMS, and WhatsApp
-- 📊 **Analytics Dashboard**: Visual insights into loans, cash flow, and interest earnings
-- 📎 **Attachments**: Store loan agreements, receipts, and bills securely
-- 🔍 **Advanced Search & Filter**: Find loans by counterparty, amount, date, or status
-- 🌙 **Dark Mode**: Eye-friendly interface with theme support
-- 🔒 **Biometric Security**: Secure access with Face ID/Fingerprint
+### Core Functionality
+- 📝 **Comprehensive Loan Tracking**: Manage loans given to others or taken from others
+- 💰 **Flexible Payment Schedules**: Daily, weekly, monthly, or custom EMI frequencies
+- 📈 **Interest Calculations**: Simple and compound interest with multiple compounding frequencies
+- 💳 **Payment Management**: Record payments with automatic balance updates
+- 📊 **Beautiful Dashboard**: Real-time insights into loans, cash flow, and net position
+- 🎨 **Custom Theme**: Professional light/dark mode with cohesive design system
+- 💾 **Offline-First**: All data stored locally in SQLite database
+- 🔒 **Secure**: Local database with optional biometric authentication
 
-### Advanced Features
-- 📅 **Amortization Schedule**: Complete payment schedule with principal/interest breakdown
-- 📉 **Prepayment Analysis**: Calculate impact of early payments
-- 📊 **Cash Flow Tracking**: Monitor money in/out over time
-- 🎯 **Net Position**: Real-time view of receivables vs payables
-- ⚠️ **Overdue Alerts**: Automatic status updates for missed payments
-- 📄 **Report Generation**: Export data as PDF/Excel
-- 🌐 **Multi-Currency**: Support for multiple currencies with conversion
-- 📱 **Offline-First**: Work without internet, sync when online
+### Financial Features
+- Calculate EMI for any payment frequency
+- Generate complete amortization schedules
+- Track interest accrual over time
+- Analyze prepayment impact
+- Support for irregular partial payments
 
 ## 🏗️ Architecture
 
+### Monorepo Structure
+
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     Mobile App (React Native)                │
-│                  iOS & Android | Offline Support             │
-└────────────────────┬────────────────────────────────────────┘
-                     │ REST API
-                     │
-┌────────────────────▼────────────────────────────────────────┐
-│              Backend API (Node.js + Express)                 │
-│          JWT Auth | Business Logic | File Storage           │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-        ┌────────────┴────────────┐
-        │                         │
-┌───────▼──────┐         ┌────────▼─────────┐
-│  PostgreSQL  │         │   AWS S3/Cloud   │
-│   Database   │         │  File Storage    │
-└──────────────┘         └──────────────────┘
+loanlog/
+├── app/                          # Expo mobile application
+│   ├── app/                      # App Router screens
+│   │   ├── _layout.tsx          # Root layout
+│   │   ├── index.tsx            # Dashboard screen
+│   │   └── loans/               # Loan screens
+│   ├── components/              # Reusable UI components
+│   ├── src/                     # Backend logic (shared)
+│   │   ├── db/                  # Database setup
+│   │   │   ├── schema.ts        # Drizzle ORM schema
+│   │   │   └── client.ts        # Database client
+│   │   ├── services/            # Business logic
+│   │   │   ├── loanService.ts   # Loan operations
+│   │   │   └── paymentService.ts # Payment operations
+│   │   └── utils/               # Utilities
+│   │       ├── interestCalculator.ts
+│   │       ├── emiCalculator.ts
+│   │       └── formatters.ts
+│   ├── drizzle/                 # Database migrations
+│   ├── global.css               # NativeWind styles
+│   ├── tailwind.config.js       # Tailwind configuration
+│   ├── drizzle.config.ts        # Drizzle configuration
+│   └── package.json             # App dependencies
+├── package.json                 # Root workspace config
+└── README.md                    # This file
 ```
+
+### Technology Stack
+
+**Frontend**
+- **Expo SDK 51**: Cross-platform mobile framework
+- **Expo Router**: File-based routing
+- **React Native**: Mobile UI framework
+- **NativeWind v4**: Tailwind CSS for React Native
+- **TypeScript**: Type safety
+
+**Backend/Database**
+- **Expo SQLite**: Local database
+- **Drizzle ORM**: Type-safe database operations
+- **Zustand** (optional): State management
+
+**Styling**
+- **NativeWind**: Utility-first styling
+- **Custom Theme**: Professional design system with light/dark modes
 
 ## 🚀 Quick Start
 
@@ -58,75 +81,112 @@
 
 - Node.js >= 18.0.0
 - npm >= 9.0.0
-- PostgreSQL >= 14
-- Git
+- Expo CLI
+- iOS Simulator (Mac) or Android Emulator
 
-### Backend Setup
+### Installation
 
+1. **Clone the repository**
 ```bash
-# Clone repository
 git clone https://github.com/Raosandeep007/loanlog.git
-cd loanlog/backend
-
-# Install dependencies
-npm install
-
-# Configure environment
-cp .env.example .env
-# Edit .env with your configuration
-
-# Setup database
-createdb loanlog_dev
-npm run migrate
-
-# Start development server
-npm run dev
+cd loanlog
 ```
 
-Server runs on `http://localhost:3000`
-
-### Mobile App Setup
-
+2. **Install dependencies**
 ```bash
-cd ../mobile
 npm install
+cd app
+npm install
+```
 
+3. **Initialize database**
+```bash
+npm run db:generate
+```
+
+4. **Start Expo development server**
+```bash
+npm start
+# or
+npm run app
+```
+
+5. **Run on your device**
+```bash
 # iOS
-cd ios && pod install && cd ..
-npx react-native run-ios
+npm run app:ios
 
 # Android
-npx react-native run-android
+npm run app:android
+
+# Web
+npm run app:web
 ```
 
-## 📚 Documentation
+## 📱 Screens
 
-- [Project Structure](PROJECT_STRUCTURE.md) - Tech stack and directory layout
-- [Database Schema](DATABASE_SCHEMA.md) - Complete database design
-- [API Specification](API_SPECIFICATION.md) - REST API endpoints
-- [Deployment Guide](DEPLOYMENT_GUIDE.md) - Production deployment instructions
-- [Testing Strategy](TESTING_STRATEGY.md) - Comprehensive testing approach
+### Dashboard
+- Net position (receivables - payables)
+- Total lent and borrowed amounts
+- Overdue alerts
+- Quick stats
+- Quick actions
 
-## 🧮 Core Calculations
+### Loans List
+- Filter by all/lent/borrowed
+- Beautiful loan cards with status indicators
+- Progress bars showing payment status
+- Pull to refresh
+
+### Loan Detail *(Coming Soon)*
+- Full loan information
+- Amortization schedule
+- Payment history
+- Add payment functionality
+
+### Create Loan *(Coming Soon)*
+- Comprehensive loan entry form
+- Real-time EMI calculation preview
+- Interest calculation options
+- Custom payment schedules
+
+## 🧮 Financial Calculations
 
 ### Interest Calculation
 
 **Simple Interest**:
-```
+```typescript
 Interest = (Principal × Rate × Time) / 100
 ```
 
 **Compound Interest**:
-```
+```typescript
 Amount = Principal × (1 + Rate/n)^(n×Time)
 Interest = Amount - Principal
 
 Where n = compounding frequency per year
 ```
 
+Example usage:
+```typescript
+import { calculateTotalAmountDue } from './src/utils/interestCalculator';
+
+const { totalAmountDue, interestAmount } = calculateTotalAmountDue({
+  principalAmount: 100000,
+  interestRate: 12,
+  issueDate: new Date('2026-01-01'),
+  dueDate: new Date('2027-01-01'),
+  interestType: 'compound',
+  compoundFrequency: 'monthly',
+});
+
+console.log(totalAmountDue); // ₹112,682.50
+console.log(interestAmount);  // ₹12,682.50
+```
+
 ### EMI Calculation
 
-```
+```typescript
 EMI = [P × r × (1 + r)^n] / [(1 + r)^n - 1]
 
 Where:
@@ -136,9 +196,8 @@ n = Number of periods
 ```
 
 Example usage:
-
-```javascript
-const { calculateEMI } = require('./backend/src/utils/calculations/emiCalculator');
+```typescript
+import { calculateEMI } from './src/utils/emiCalculator';
 
 const emi = calculateEMI(
   100000,   // Principal: ₹1,00,000
@@ -150,158 +209,192 @@ const emi = calculateEMI(
 console.log(emi); // ₹8,884.88 per month
 ```
 
-## 🔌 API Examples
+## 🗄️ Database Schema
+
+### Tables
+
+**users**
+- id, email, fullName, phone
+- Preferences: defaultCurrency, theme, biometricEnabled
+- notificationPreferences (JSON)
+
+**loans**
+- Basic info: id, userId, loanType (given/taken)
+- Counterparty: name, phone, email, address
+- Loan details: principalAmount, currency, issueDate, dueDate
+- Interest: interestRate, interestType, compoundFrequency
+- Payment schedule: paymentFrequency, numberOfInstallments, emiAmount
+- Calculated: totalAmountDue, totalPaid, outstandingBalance
+- Status: active, partially_paid, fully_paid, overdue, written_off
+
+**payments**
+- id, loanId, amount, paymentDate, paymentMethod
+- Breakdown: principalPortion, interestPortion
+- balanceAfterPayment, status, notes
+
+**attachments**
+- id, loanId, paymentId
+- File info: fileName, fileType, fileUri
+- attachmentType: agreement, receipt, bill, proof
+
+**reminders**
+- id, loanId, userId
+- reminderDate, reminderChannel, message
+- status: scheduled, sent, failed, cancelled
+
+**interestLog**
+- Track interest accrual over time
+- calculationDate, principalBalance, interestAccrued
+
+## 🎨 Theme System
+
+The app uses a custom design system with comprehensive light and dark modes:
+
+```javascript
+// Light mode colors
+--primary: #0152cb (Primary blue)
+--secondary: #dee2f1 (Light gray)
+--accent: #e7effc (Accent blue)
+--destructive: #df2224 (Red)
+--background: #edf0f9 (Light background)
+
+// Dark mode colors
+--primary: #0265fd (Bright blue)
+--background: #1c2433 (Dark background)
+--card: #313a46 (Dark card)
+```
+
+Use with NativeWind:
+```tsx
+<View className="bg-primary p-4 rounded-lg">
+  <Text className="text-primary-foreground font-bold">
+    Primary Button
+  </Text>
+</View>
+```
+
+## 📖 API Examples
 
 ### Create a Loan
 
-```bash
-curl -X POST https://api.loanlog.app/v1/loans \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "loanType": "given",
-    "counterpartyName": "John Doe",
-    "principalAmount": 10000,
-    "interestRate": 12,
-    "interestType": "compound",
-    "compoundFrequency": "monthly",
-    "numberOfInstallments": 12,
-    "paymentFrequency": "monthly",
-    "issueDate": "2026-01-20",
-    "dueDate": "2027-01-20"
-  }'
+```typescript
+import { LoanService } from './src/services/loanService';
+
+const loan = await LoanService.createLoan({
+  userId: 'user-id',
+  loanType: 'given',
+  counterpartyName: 'John Doe',
+  principalAmount: 10000,
+  currency: 'USD',
+  issueDate: new Date(),
+  dueDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+  interestRate: 12,
+  interestType: 'compound',
+  compoundFrequency: 'monthly',
+  numberOfInstallments: 12,
+  paymentFrequency: 'monthly',
+});
 ```
 
-### Record Payment
+### Record a Payment
 
-```bash
-curl -X POST https://api.loanlog.app/v1/loans/{loanId}/payments \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "amount": 886.18,
-    "paymentDate": "2026-02-20",
-    "paymentMethod": "bank_transfer"
-  }'
+```typescript
+import { PaymentService } from './src/services/paymentService';
+
+const { payment, updatedLoan } = await PaymentService.recordPayment({
+  loanId: 'loan-id',
+  amount: 886.18,
+  paymentDate: new Date(),
+  paymentMethod: 'bank_transfer',
+  status: 'completed',
+});
 ```
 
 ### Get Dashboard Summary
 
-```bash
-curl https://api.loanlog.app/v1/dashboard/summary \
-  -H "Authorization: Bearer YOUR_TOKEN"
+```typescript
+import { LoanService } from './src/services/loanService';
+
+const summary = await LoanService.getDashboardSummary('user-id');
+
+console.log(summary.netPosition);       // ₹5,000
+console.log(summary.loansGiven.count);  // 3
+console.log(summary.overdue.amount);    // ₹1,200
 ```
 
-## 🧪 Testing
+## 🧪 Development
+
+### Database Operations
 
 ```bash
-# Run all tests
-npm test
+# Generate migrations
+npm run db:generate
 
-# Run with coverage
-npm test -- --coverage
+# Apply migrations
+npm run db:migrate
 
-# Run specific test suite
-npm test -- interestCalculator.test.js
-
-# Watch mode
-npm test -- --watch
+# Open Drizzle Studio
+npm run db:studio
 ```
 
-## 📦 Technology Stack
+### Type Checking
 
-### Backend
-- **Runtime**: Node.js 18+
-- **Framework**: Express.js
-- **Database**: PostgreSQL with Sequelize ORM
-- **Authentication**: JWT with refresh tokens
-- **File Storage**: AWS S3 / Google Cloud Storage
-- **Scheduling**: node-cron for reminders
-- **Testing**: Jest + Supertest
+```bash
+npm run type-check
+```
 
-### Mobile
-- **Framework**: React Native
-- **State Management**: Redux Toolkit
-- **Navigation**: React Navigation
-- **UI Components**: React Native Paper
-- **Charts**: Victory Native
-- **Forms**: React Hook Form
-- **Notifications**: react-native-push-notification
+### Linting
 
-### DevOps
-- **CI/CD**: GitHub Actions
-- **Hosting**: Heroku / AWS EC2
-- **Monitoring**: Sentry, New Relic
-- **Analytics**: Mixpanel
-- **Logging**: Winston + ELK Stack
+```bash
+npm run lint
+```
 
 ## 🗺️ Roadmap
 
-### Phase 1: MVP (✅ Completed)
-- [x] Basic loan CRUD operations
-- [x] Payment tracking
-- [x] Interest calculations
-- [x] Dashboard with summaries
-- [x] Local notifications
+### ✅ Phase 1: MVP (Completed)
+- [x] Database schema with Drizzle ORM
+- [x] Interest & EMI calculation utilities
+- [x] Loan and payment services
+- [x] Dashboard screen
+- [x] Loans list screen
+- [x] NativeWind theming
 
-### Phase 2: Enhanced Features (🚧 In Progress)
-- [ ] Cloud backup & sync
-- [ ] Report generation (PDF/Excel)
+### 🚧 Phase 2: Core Features (In Progress)
+- [ ] Create loan form
+- [ ] Loan detail screen
+- [ ] Payment recording
+- [ ] Amortization schedule view
+- [ ] User authentication
+- [ ] Biometric security
+
+### 📋 Phase 3: Enhanced Features (Planned)
+- [ ] Data export (PDF/Excel)
+- [ ] Backup & restore
+- [ ] Charts & visualizations
+- [ ] Reminders & notifications
 - [ ] Multi-currency support
-- [ ] Advanced analytics with charts
-- [ ] QR code payment generation
 - [ ] Attachment management
-- [ ] Dark mode UI
-
-### Phase 3: Advanced Features (📋 Planned)
-- [ ] AI-powered repayment suggestions
-- [ ] Auto-reminder to borrowers (WhatsApp/SMS)
-- [ ] Digital loan agreement templates
-- [ ] Multi-user collaboration
-- [ ] Expense impact analysis
-- [ ] Credit score integration
-- [ ] Predictive analytics for defaults
+- [ ] Search functionality
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## 👥 Authors
 
-- **Development Team** - [LoanLog Team](https://github.com/Raosandeep007)
+- **LoanLog Team** - [Raosandeep007](https://github.com/Raosandeep007)
 
 ## 🙏 Acknowledgments
 
 - Interest calculation formulas based on standard financial mathematics
 - EMI calculation algorithm from banking industry standards
 - UI/UX inspiration from modern fintech applications
-
-## 📞 Support
-
-- **Documentation**: [docs.loanlog.app](https://docs.loanlog.app)
-- **Issues**: [GitHub Issues](https://github.com/Raosandeep007/loanlog/issues)
-- **Email**: support@loanlog.app
-- **Discord**: [Join our community](https://discord.gg/loanlog)
-
-## 🌟 Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Raosandeep007/loanlog&type=Date)](https://star-history.com/#Raosandeep007/loanlog&Date)
+- Theme design system from shadcn/ui
 
 ---
 
-<p align="center">Made with ❤️ by the LoanLog Team</p>
-<p align="center">
-  <a href="https://loanlog.app">Website</a> •
-  <a href="https://docs.loanlog.app">Documentation</a> •
-  <a href="https://twitter.com/loanlog">Twitter</a>
-</p>
+<p align="center">Made with ❤️ using Expo and Drizzle ORM</p>

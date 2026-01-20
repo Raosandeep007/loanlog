@@ -1,0 +1,30 @@
+{
+  "name": "loanlog-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LoanLog - Comprehensive loan tracking application with Expo and SQLite",
+  "workspaces": [
+    "app"
+  ],
+  "scripts": {
+    "app": "cd app && npm start",
+    "app:android": "cd app && npm run android",
+    "app:ios": "cd app && npm run ios",
+    "app:web": "cd app && npm run web",
+    "db:generate": "cd app && npm run db:generate",
+    "db:migrate": "cd app && npm run db:migrate",
+    "db:studio": "cd app && npm run db:studio",
+    "lint": "cd app && npm run lint",
+    "type-check": "cd app && npm run type-check"
+  },
+  "keywords": [
+    "loan-tracking",
+    "finance",
+    "expo",
+    "react-native",
+    "sqlite",
+    "drizzle-orm"
+  ],
+  "author": "LoanLog Team",
+  "license": "MIT"
+}
